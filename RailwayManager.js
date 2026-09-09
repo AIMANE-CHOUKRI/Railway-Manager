@@ -179,6 +179,31 @@ function afficherStatistiques() {
   const totalRevenue = tickets.reduce((sum, t) => sum + t.price, 0);
   console.log(`Chiffre d'affaires total : ${totalRevenue} DH`);
   
+  if (tickets.length === 0) {
+    console.log("\nTrajet le plus vendu : aucun ticket vendu pour le moment.");
+    return;
+  }
+
+  const countByTrip = {};
+  tickets.forEach((t) => {
+    countByTrip[t.tripId] = (countByTrip[t.tripId] || 0) + 1;
+  });
+
+  let bestTripId = null;
+  let bestCount = 0;
+  for (const tripId in countByTrip) {
+    if (countByTrip[tripId] > bestCount) {
+      bestCount = countByTrip[tripId];
+      bestTripId = parseInt(tripId, 10);
+    }
+  }
+
+  const bestTrip = findTripById(bestTripId);
+  console.log("\nTrajet le plus vendu :\n");
+  if (bestTrip) {
+    console.log(`${bestTrip.departure} → ${bestTrip.destination}`);
+  }
+  console.log(`${bestCount} tickets vendus`);
 }
 
 // -- Menu Principale -- //
