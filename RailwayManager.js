@@ -103,6 +103,24 @@ function afficherTickets(list = tickets) {
     console.log(`Prix : ${ticket.price} DH\n`);
   });
 }
+function annulerTicket() {
+  const ticketId = parseInt(prompt("Identifiant du ticket : ").trim(), 10);
+
+  const ticketIndex = tickets.findIndex((t) => t.id === ticketId);
+  if (ticketIndex === -1) {
+    console.log("\nTicket introuvable.");
+    return;
+  }
+
+  const ticket = tickets[ticketIndex];
+  const trip = findTripById(ticket.tripId);
+
+  tickets.splice(ticketIndex, 1);
+
+  trip.availableSeats++;
+
+  console.log("\nTicket annulé avec succès.");
+}
 
 // -- Menu Principale -- //
 function afficherMenu(){
@@ -124,6 +142,9 @@ function main(){
                 break;
             case "3":
                 afficherTickets();
+                break;
+            case "4":
+                annulerTicket();
                 break;
             case "0":
                 console.log("\nAu revoir !");
