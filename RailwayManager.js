@@ -149,6 +149,14 @@ function filtrerTrajets() {
     console.log(`${t.departure} → ${t.destination} : ${t.price} DH`);
   });
 }
+function trierTrajets() {
+  const sorted = [...trips].sort((a, b) => a.price - b.price);
+
+  printHeader("TRAJETS TRIES PAR PRIX CROISSANT");
+  sorted.forEach((t) => {
+    console.log(`${t.departure} → ${t.destination} : ${t.price} DH`);
+  });
+}
 
 // -- Menu Principale -- //
 
@@ -180,6 +188,9 @@ function main(){
                 break;
             case "6":
                 filtrerTrajets();
+                break;
+            case "7":
+                trierTrajets();
                 break;
             case "0":
                 console.log("\nAu revoir !");
