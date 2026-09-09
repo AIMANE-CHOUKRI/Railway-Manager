@@ -23,5 +23,52 @@ const trips = [
   { id: 19, departure: "Marrakech", destination: "Agadir", departureTime: "15:00", arrivalTime: "18:30", price: 100, availableSeats: 50 },
   { id: 20, departure: "Agadir", destination: "Safi", departureTime: "19:00", arrivalTime: "22:00", price: 95, availableSeats: 50 },
 ];
+// -- Utilité -- //
+
+function printHeader(header){
+    console.log(`\n=== ${header} ===\n`); // pour l'utilisation dans chaque action
+}
+
+// -- Actions (Fonctions) -- //
+
+function afficherTrajets(list = trips) {
+  printHeader("TRAJETS DISPONIBLES");
+  if (list.length === 0) {
+    console.log("Aucun trajet trouvé.");
+    return;
+  }
+  list.forEach((trip) => {
+    console.log(`#${trip.id} ${trip.departure} → ${trip.destination}`);
+    console.log(`Départ : ${trip.departureTime}`);
+    console.log(`Arrivée : ${trip.arrivalTime}`);
+    console.log(`Prix : ${trip.price} DH`);
+    console.log(`Places disponibles : ${trip.availableSeats}`);
+    console.log("");
+  });
+}
+
 // -- Menu Principale -- //
-prompt("\n=================================\n        RAILWAY MANAGER\n=================================\n\n1. Afficher les trajets\n2. Acheter un ticket\n3. Afficher les tickets\n4. Annuler un ticket\n5. Rechercher un ticket\n6. Filtrer les trajets\n7. Trier les trajets\n0. Quitter\n\nVotre choix : ");
+function afficherMenu(){
+    console.log("\n=================================\n        RAILWAY MANAGER\n=================================\n\n1. Afficher les trajets\n2. Acheter un ticket\n3. Afficher les tickets\n4. Annuler un ticket\n5. Rechercher un ticket\n6. Filtrer les trajets\n7. Trier les trajets\n0. Quitter\n\n");
+}
+function main(){
+    let running = true;
+
+    while(running){
+        afficherMenu();
+        const choice = prompt("Votre choix : ").trim(); // trim pour effacer les espaces vides du prompt
+        
+        switch(choice){
+            case "1":
+                afficherTrajets();
+                break;
+            case "0":
+                console.log("\nAu revoir !");
+                running = false;
+                break;
+            default:
+                console.log("\nChoix invalide, veuillez réessayer.");
+        }
+    }
+}
+main();
