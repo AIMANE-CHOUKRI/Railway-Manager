@@ -134,6 +134,21 @@ function rechercherTicket() {
 
   afficherTickets(results);
 }
+function filtrerTrajets() {
+  const departure = prompt("Ville de départ : ").trim();
+  const results = trips.filter(
+    (t) => t.departure.toLowerCase() === departure.toLowerCase()
+  );
+
+  printHeader("RESULTAT DU FILTRE");
+  if (results.length === 0) {
+    console.log("Aucun trajet trouvé au départ de cette ville.");
+    return;
+  }
+  results.forEach((t) => {
+    console.log(`${t.departure} → ${t.destination} : ${t.price} DH`);
+  });
+}
 
 // -- Menu Principale -- //
 
@@ -162,6 +177,9 @@ function main(){
                 break;
             case "5":
                 rechercherTicket();
+                break;
+            case "6":
+                filtrerTrajets();
                 break;
             case "0":
                 console.log("\nAu revoir !");
