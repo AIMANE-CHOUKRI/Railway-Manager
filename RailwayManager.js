@@ -171,11 +171,20 @@ function trierTrajets() {
     console.log(`${t.departure} → ${t.destination} : ${t.price} DH`);
   });
 }
+function afficherStatistiques() {
+  printHeader("STATISTIQUES");
+
+  console.log(`Nombre total de tickets : ${tickets.length}`);
+
+  const totalRevenue = tickets.reduce((sum, t) => sum + t.price, 0);
+  console.log(`Chiffre d'affaires total : ${totalRevenue} DH`);
+  
+}
 
 // -- Menu Principale -- //
 
 function afficherMenu(){
-    console.log("\n=================================\n        RAILWAY MANAGER\n=================================\n\n1. Afficher les trajets\n2. Acheter un ticket\n3. Afficher les tickets\n4. Annuler un ticket\n5. Rechercher un ticket\n6. Filtrer les trajets\n7. Trier les trajets\n0. Quitter\n\n");
+    console.log("\n=================================\n        RAILWAY MANAGER\n=================================\n\n1. Afficher les trajets\n2. Acheter un ticket\n3. Afficher les tickets\n4. Annuler un ticket\n5. Rechercher un ticket\n6. Filtrer les trajets\n7. Trier les trajets\n8. Afficher les statistiques\n0. Quitter\n\n");
 }
 function main(){
     let running = true;
@@ -205,6 +214,9 @@ function main(){
                 break;
             case "7":
                 trierTrajets();
+                break;
+            case "8":
+                afficherStatistiques();
                 break;
             case "0":
                 console.log("\nAu revoir !");
