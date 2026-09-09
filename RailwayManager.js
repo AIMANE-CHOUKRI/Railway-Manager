@@ -121,8 +121,22 @@ function annulerTicket() {
 
   console.log("\nTicket annulé avec succès.");
 }
+function rechercherTicket() {
+  const passengerName = prompt("Nom du passager : ").trim();
+  const results = tickets.filter(
+    (t) => t.passengerName.toLowerCase() === passengerName.toLowerCase()
+  );
+
+  if (results.length === 0) {
+    console.log("\nAucun ticket trouvé pour ce passager.");
+    return;
+  }
+
+  afficherTickets(results);
+}
 
 // -- Menu Principale -- //
+
 function afficherMenu(){
     console.log("\n=================================\n        RAILWAY MANAGER\n=================================\n\n1. Afficher les trajets\n2. Acheter un ticket\n3. Afficher les tickets\n4. Annuler un ticket\n5. Rechercher un ticket\n6. Filtrer les trajets\n7. Trier les trajets\n0. Quitter\n\n");
 }
@@ -145,6 +159,9 @@ function main(){
                 break;
             case "4":
                 annulerTicket();
+                break;
+            case "5":
+                rechercherTicket();
                 break;
             case "0":
                 console.log("\nAu revoir !");
