@@ -24,6 +24,9 @@ const trips = [
   { id: 19, departure: "Marrakech", destination: "Agadir", departureTime: "15:00", arrivalTime: "18:30", price: 100, availableSeats: 50 },
   { id: 20, departure: "Agadir", destination: "Safi", departureTime: "19:00", arrivalTime: "22:00", price: 95, availableSeats: 50 },
 ];
+trips.forEach((trip) => {
+  trip.occupiedSeats = [];
+});
 const tickets = [];
 let nextTicketId = 1;
 
@@ -34,6 +37,13 @@ function printHeader(header){
 }
 function findTripById(id) {
   return trips.find((t) => t.id === id);
+}
+function getNextSeatNumber(trip) {
+  let seat = 1;
+  while (trip.occupiedSeats.includes(seat)) {
+    seat++;
+  }
+  return seat;
 }
 
 // -- Actions (Fonctions) -- //
@@ -67,7 +77,7 @@ function acheterTicket() {
     return;
   }
 
-  const seatNumber = (50 - trip.availableSeats) + 1;
+  const seatNumber = getNextSeatNumber(trip);
 
   const ticket = {
     id: nextTicketId++,
@@ -78,6 +88,7 @@ function acheterTicket() {
   };
 
   tickets.push(ticket);
+  trip.occupiedSeats.push(seatNumber);
   trip.availableSeats -= 1;
 
   console.log("\nTicket acheté avec succès.\n");
@@ -117,7 +128,10 @@ function annulerTicket() {
 
   tickets.splice(ticketIndex, 1);
 
-  trip.availableSeats++;
+  if (trip) {
+    trip.availableSeats += 1;
+    trip.occupiedSeats = trip.occupiedSeats.filter((seat) => seat !== ticket.seatNumber);
+  }
 
   console.log("\nTicket annulé avec succès.");
 }
