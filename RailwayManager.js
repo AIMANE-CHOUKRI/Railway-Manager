@@ -1,6 +1,7 @@
 const prompt = require('prompt-sync')();
 
 // -- Données -- //
+
 const trips = [
   { id: 1, departure: "Safi", destination: "Youssoufia", departureTime: "07:30", arrivalTime: "08:30", price: 25, availableSeats: 50 },
   { id: 2, departure: "Safi", destination: "Marrakech", departureTime: "08:00", arrivalTime: "10:30", price: 90, availableSeats: 50 },
@@ -23,10 +24,16 @@ const trips = [
   { id: 19, departure: "Marrakech", destination: "Agadir", departureTime: "15:00", arrivalTime: "18:30", price: 100, availableSeats: 50 },
   { id: 20, departure: "Agadir", destination: "Safi", departureTime: "19:00", arrivalTime: "22:00", price: 95, availableSeats: 50 },
 ];
+const tickets = [];
+let nextTicketId = 1;
+
 // -- Utilité -- //
 
 function printHeader(header){
     console.log(`\n=== ${header} ===\n`); // pour l'utilisation dans chaque action
+}
+function findTripById(id) {
+  return trips.find((t) => t.id === id);
 }
 
 // -- Actions (Fonctions) -- //
@@ -42,8 +49,58 @@ function afficherTrajets(list = trips) {
     console.log(`Départ : ${trip.departureTime}`);
     console.log(`Arrivée : ${trip.arrivalTime}`);
     console.log(`Prix : ${trip.price} DH`);
-    console.log(`Places disponibles : ${trip.availableSeats}`);
-    console.log("");
+    console.log(`Places disponibles : ${trip.availableSeats}\n`);
+  });
+}
+function acheterTicket() {
+  const passengerName = prompt("Nom du passager : ").trim();
+  const tripId = parseInt(prompt("Identifiant du trajet : ").trim(), 10);
+
+  const trip = findTripById(tripId);
+  if (!trip) {
+    console.log("\nTrajet introuvable.");
+    return;
+  }
+
+  if (trip.availableSeats <= 0) {
+    console.log("\nTrain complet.");
+    return;
+  }
+
+  const seatNumber = (50 - trip.availableSeats) + 1;
+
+  const ticket = {
+    id: nextTicketId++,
+    passengerName,
+    tripId: trip.id,
+    seatNumber,
+    price: trip.price,
+  };
+
+  tickets.push(ticket);
+  trip.availableSeats -= 1;
+
+  console.log("\nTicket acheté avec succès.\n");
+  console.log(`Ticket #${ticket.id}`);
+  console.log(`Passager : ${ticket.passengerName}`);
+  console.log(`Trajet : ${trip.departure} → ${trip.destination}`);
+  console.log(`Place : ${ticket.seatNumber}`);
+  console.log(`Prix : ${ticket.price} DH`);
+}
+function afficherTickets(list = tickets) {
+  printHeader("TICKETS");
+  if (list.length === 0) {
+    console.log("Aucun ticket enregistré.");
+    return;
+  }
+  list.forEach((ticket) => {
+    const trip = findTripById(ticket.tripId);
+    const routeLabel = trip ? `${trip.departure} → ${trip.destination}` : "Trajet inconnu";
+    console.log(`Ticket #${ticket.id}`);
+    console.log(`Passager : ${ticket.passengerName}`);
+    console.log(`Trajet : ${routeLabel}`);
+    console.log(`Place : ${ticket.seatNumber}`);
+    console.log(`Prix : ${ticket.price} DH\n`);
   });
 }
 
@@ -61,6 +118,12 @@ function main(){
         switch(choice){
             case "1":
                 afficherTrajets();
+                break;
+            case "2":
+                acheterTicket();
+                break;
+            case "3":
+                afficherTickets();
                 break;
             case "0":
                 console.log("\nAu revoir !");
