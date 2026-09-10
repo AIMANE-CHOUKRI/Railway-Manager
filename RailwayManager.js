@@ -48,7 +48,7 @@ tickets.forEach((ticket) => {
   }
 });
 
-let nextTicketId = tickets.length > 0 
+let nextTicketId = tickets.length > 0 // On calcule le prochain id de ticket à partir du plus grand id existant
   ? Math.max(...tickets.map(t => t.id)) + 1 
   : 1;
 
@@ -60,7 +60,8 @@ function printHeader(header){
 function findTripById(id) {
   return trips.find((t) => t.id === id);
 }
-function getNextSeatNumber(trip) {
+
+function getNextSeatNumber(trip) { // Cherche la première place libre pour un trajet donné.
   let seat = 1;
   while (trip.occupiedSeats.includes(seat)) {
     seat++;
@@ -88,6 +89,11 @@ function acheterTicket() {
   const passengerName = prompt("Nom du passager : ").trim();
   const tripId = parseInt(prompt("Identifiant du trajet : ").trim(), 10);
 
+  if (passengerName === "") {
+    console.log("\nLe nom du passager ne peut pas être vide.");
+    return;
+  }
+  
   const trip = findTripById(tripId);
   if (!trip) {
     console.log("\nTrajet introuvable.");
@@ -110,8 +116,8 @@ function acheterTicket() {
   };
 
   tickets.push(ticket);
-  trip.occupiedSeats.push(seatNumber);
-  trip.availableSeats -= 1;
+  trip.occupiedSeats.push(seatNumber); // On note les places qui ne sont pas vides
+  trip.availableSeats -= 1; // On diminue la quantité des places vides
 
   console.log("\nTicket acheté avec succès.\n");
   console.log(`Ticket #${ticket.id}`);
@@ -139,27 +145,29 @@ function afficherTickets(list = tickets) {
 function annulerTicket() {
   const ticketId = parseInt(prompt("Identifiant du ticket : ").trim(), 10);
 
-  const ticketIndex = tickets.findIndex((t) => t.id === ticketId);
+  const ticketIndex = tickets.findIndex((t) => t.id === ticketId); // On trouve l'index du ticket, selon l'index donné par l'user
   if (ticketIndex === -1) {
     console.log("\nTicket introuvable.");
     return;
   }
 
-  const ticket = tickets[ticketIndex];
-  const trip = findTripById(ticket.tripId);
+  const ticket = tickets[ticketIndex]; // On trouve le ticket selon l'index
+  const trip = findTripById(ticket.tripId); // On trouve le trip selon le ticket
 
+  // On retire le ticket du tableau
   tickets.splice(ticketIndex, 1);
 
+  // pour qu'elle puisse être réattribuée par getNextSeatNumber().
   if (trip) {
-    trip.availableSeats += 1;
-    trip.occupiedSeats = trip.occupiedSeats.filter((seat) => seat !== ticket.seatNumber);
+    trip.availableSeats += 1; // On augmente le nombre de places vides
+    trip.occupiedSeats = trip.occupiedSeats.filter((seat) => seat !== ticket.seatNumber); // Et cela pour que la place annulée soit disponible pour un autre passager
   }
 
   console.log("\nTicket annulé avec succès.");
 }
 function rechercherTicket() {
   const passengerName = prompt("Nom du passager : ").trim();
-  const results = tickets.filter(
+  const results = tickets.filter( // On cherche les tickets, pour un nom qui se répète (soit majiscule ou miniscule)
     (t) => t.passengerName.toLowerCase() === passengerName.toLowerCase()
   );
 
@@ -172,7 +180,7 @@ function rechercherTicket() {
 }
 function filtrerTrajets() {
   const departure = prompt("Ville de départ : ").trim();
-  const results = trips.filter(
+  const results = trips.filter( // On cherche les départures des trajets, (soit majiscule ou miniscule)
     (t) => t.departure.toLowerCase() === departure.toLowerCase()
   );
 
@@ -186,7 +194,7 @@ function filtrerTrajets() {
   });
 }
 function trierTrajets() {
-  const sorted = [...trips].sort((a, b) => a.price - b.price);
+  const sorted = [...trips].sort((a, b) => a.price - b.price); // Tri Croissant des trajets
 
   printHeader("TRAJETS TRIES PAR PRIX CROISSANT");
   sorted.forEach((t) => {
@@ -198,7 +206,7 @@ function afficherStatistiques() {
 
   console.log(`Nombre total de tickets : ${tickets.length}`);
 
-  const totalRevenue = tickets.reduce((sum, t) => sum + t.price, 0);
+  const totalRevenue = tickets.reduce((sum, t) => sum + t.price, 0); // Somme des prix de tous les tickets
   console.log(`Chiffre d'affaires total : ${totalRevenue} DH`);
   
   if (tickets.length === 0) {
