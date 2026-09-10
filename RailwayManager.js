@@ -39,7 +39,18 @@ const tickets = [
 trips.forEach((trip) => {
   trip.occupiedSeats = [];
 });
-let nextTicketId = 1;
+
+tickets.forEach((ticket) => {
+  const trip = findTripById(ticket.tripId);
+  if (trip) {
+    trip.occupiedSeats.push(ticket.seatNumber);
+    trip.availableSeats -= 1;
+  }
+});
+
+let nextTicketId = tickets.length > 0 
+  ? Math.max(...tickets.map(t => t.id)) + 1 
+  : 1;
 
 // -- Utilité -- //
 
