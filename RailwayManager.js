@@ -24,10 +24,21 @@ const trips = [
   { id: 19, departure: "Marrakech", destination: "Agadir", departureTime: "15:00", arrivalTime: "18:30", price: 100, availableSeats: 50 },
   { id: 20, departure: "Agadir", destination: "Safi", departureTime: "19:00", arrivalTime: "22:00", price: 95, availableSeats: 50 },
 ];
+const tickets = [
+  {id:1,passengerName:"Ahmed",tripId:1,seatNumber:1,price:25},
+  {id:2,passengerName:"Bashir",tripId:1,seatNumber:2,price:25},
+  {id:3,passengerName:"Coumir",tripId:1,seatNumber:3,price:25},
+  {id:4,passengerName:"Doha",tripId:2,seatNumber:1,price:90},
+  {id:5,passengerName:"Eliyas",tripId:3,seatNumber:1,price:140},
+  {id:6,passengerName:"Farid",tripId:4,seatNumber:1,price:65},
+  {id:7,passengerName:"Ghali",tripId:5,seatNumber:1,price:110},
+  {id:8,passengerName:"Hamid",tripId:6,seatNumber:1,price:120},
+  {id:9,passengerName:"Ismail",tripId:7,seatNumber:1,price:150},
+  {id:10,passengerName:"Jad",tripId:9,seatNumber:1,price:55},
+];
 trips.forEach((trip) => {
   trip.occupiedSeats = [];
 });
-const tickets = [];
 let nextTicketId = 1;
 
 // -- Utilité -- //
