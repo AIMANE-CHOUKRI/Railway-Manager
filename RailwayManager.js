@@ -36,6 +36,9 @@ const tickets = [
   {id:9,passengerName:"Ismail",tripId:7,seatNumber:1,price:150},
   {id:10,passengerName:"Jad",tripId:9,seatNumber:1,price:55},
 ];
+
+// -- Utilité -- //
+
 trips.forEach((trip) => {
   trip.occupiedSeats = [];
 });
@@ -51,8 +54,6 @@ tickets.forEach((ticket) => {
 let nextTicketId = tickets.length > 0 // On calcule le prochain id de ticket à partir du plus grand id existant
   ? Math.max(...tickets.map(t => t.id)) + 1 
   : 1;
-
-// -- Utilité -- //
 
 function printHeader(header){
     console.log(`\n=== ${header} ===\n`); // pour l'utilisation dans chaque action
