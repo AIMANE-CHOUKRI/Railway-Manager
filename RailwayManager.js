@@ -39,6 +39,19 @@ const tickets = [
 
 // -- Utilité -- //
 
+function filterByPrice(minPrice, maxPrice) {
+  const results = trips.filter(
+    (t) => t.price >= minPrice && t.price <= maxPrice
+  );
+  if (results.length === 0) {
+    console.log("Aucun trajet dans cette fourchette.");
+    return;
+  }
+  results.forEach((t) =>
+    console.log(`${t.id}. ${t.departure} -> ${t.destination} | ${t.price} DH`)
+  );
+}
+
 trips.forEach((trip) => {
   trip.occupiedSeats = [];
 });
